@@ -65,8 +65,8 @@ $lang = array_merge($lang, [
 	'ACL_U_MCHAT_POSTS'						=> 'Peut personnaliser : « <em>Afficher les nouveaux messages</em> ».',
 	'ACL_U_MCHAT_RELATIVE_TIME'				=> 'Peut personnaliser : « <em>Afficher le temps relatif</em> ».',
 	'ACL_U_MCHAT_SOUND'						=> 'Peut personnaliser : « <em>Activer les sons</em> ».',
-	'ACL_U_MCHAT_WHOIS_INDEX'				=> 'Peut personnaliser : « <em>Afficher « qui est dans le chat » sous le chat</em> ».',
-	'ACL_U_MCHAT_STATS_INDEX'				=> 'Peut personnaliser : « <em>Afficher « qui est dans le chat » dans la section statistiques</em> ».',
+	'ACL_U_MCHAT_WHOIS_INDEX'				=> 'Peut personnaliser : « <em>Afficher « qui est dans le mini-tchat » sous le mini-tchat</em> ».',
+	'ACL_U_MCHAT_STATS_INDEX'				=> 'Peut personnaliser : « <em>Afficher « qui est dans le mini-tchat » dans la section statistiques</em> ».',
 
 	'ACL_A_MCHAT'							=> 'Peut gérer les paramètres du mini-tchat.',
 ]);

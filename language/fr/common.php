@@ -41,19 +41,19 @@ if (empty($lang) || !is_array($lang))
 $lang = array_merge($lang, [
 	'MCHAT_TITLE'					=> 'Mini-tchat',
 	'MCHAT_TITLE_COUNT'				=> [
-		0 => 'mChat',
-		1 => 'mChat [<strong>%1$d</strong>]',
+		0 => 'Mini-tchat',
+		1 => 'Mini-tchat [<strong>%1$d</strong>]',
 	],
 	'MCHAT_NAVBAR_CUSTOM_PAGE'		=> 'Page du mini-tchat',
 	'MCHAT_NAVBAR_ARCHIVE'			=> 'Archive',
 	'MCHAT_NAVBAR_RULES'			=> 'Règles',
 
 	// Who is chatting
-	'MCHAT_WHO_IS_CHATTING'			=> 'Qui est dans le chat',
+	'MCHAT_WHO_IS_CHATTING'			=> 'Qui est dans le mini-tchat',
 	'MCHAT_ONLINE_USERS_TOTAL'		=> [
-		0 => 'Membre(s) dans le chat',
-		1 => '<strong>%1$d</strong> membre dans le chat',
-		2 => '<strong>%1$d</strong> membres dans le chat',
+		0 => 'Membre(s) dans le mini-tchat',
+		1 => '<strong>%1$d</strong> membre dans le mini-tchat',
+		2 => '<strong>%1$d</strong> membres dans le mini-tchat',
 	],
 	'MCHAT_ONLINE_EXPLAIN'			=> 'basé sur les membres actifs au cours des dernières %1$s',
 	'MCHAT_HOURS'					=> [
