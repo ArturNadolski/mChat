@@ -335,6 +335,9 @@ jQuery(function($) {
 			mChat.resetSession();
 		},
 		refresh: function(message) {
+			if (mChat.pageIsUnloading) {
+				return $.when();
+			}
 			var isAdd = typeof message !== 'undefined';
 			if (!isAdd) {
 				mChat.sessionLength += mChat.refreshTime;
@@ -775,26 +778,48 @@ jQuery(function($) {
 			}
 		});
 
+		var toggleRememberColor = function() {
+			var $this = $(this);
+			var newColor = $this.data('color');
+			if (mChat.storage.get('color') === newColor) {
+				mChat.storage.remove('color');
+			} else {
+				mChat.storage.set('color', newColor);
+				mChat.cached('colour').find('.colour-palette a').removeClass('remember-color');
+			}
+			$this.toggleClass('remember-color');
+		};
+
+		var toggleRememberColorTimer = 0;
+		var isToggledRememberColor = false;
 		mChat.cached('colour').find('.colour-palette').on('click', 'a', function(e) {
-			if (e.ctrlKey || e.metaKey) {
+			if (isToggledRememberColor) {
 				e.preventDefault();
 				e.stopImmediatePropagation();
-				var $this = $(this);
-				var newColor = $this.data('color');
-				if (mChat.storage.get('color') === newColor) {
-					mChat.storage.remove('color');
-				} else {
-					mChat.storage.set('color', newColor);
-					mChat.cached('colour').find('.colour-palette a').removeClass('remember-color');
-				}
-				$this.toggleClass('remember-color');
+				isToggledRememberColor = false;
+			} else if (e.ctrlKey || e.metaKey) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				toggleRememberColor.call(this);
 			}
+		}).on('mousedown touchstart', 'a', function() {
+			var that = this;
+			toggleRememberColorTimer = setTimeout(function() {
+				toggleRememberColor.call(that);
+				isToggledRememberColor = true;
+			}, 500);
+		}).on('mouseup touchend', 'a', function() {
+			clearTimeout(toggleRememberColorTimer);
 		});
 
 		var color = mChat.storage.get('color');
 		if (color) {
 			mChat.cached('colour').find('.colour-palette a[data-color="' + color + '"]').addClass('remember-color');
 		}
+
+		mChat.cached('colour').find('.colour-palette a').each(function() {
+			$(this).removeAttr('href');
+		});
 
 		if (mChat.maxInputHeight) {
 			mChat.cached('input').one('focus', function() {
@@ -805,7 +830,8 @@ jQuery(function($) {
 		mChat.cached('form').submit(function(e) {
 			e.preventDefault();
 		}).keypress(function(e) {
-			if ((e.which === 10 || e.which === 13) && mChat.cached('input').is(e.target)) {
+			var isEnter = e.which === 10 || e.which === 13;
+			if (isEnter && mChat.cached('input').is(e.target)) {
 				var isCtrl = e.ctrlKey || e.metaKey;
 				if (!mChat.maxInputHeight || !isCtrl === !mChat.storage.get('no_enter')) {
 					e.preventDefault();
@@ -831,6 +857,9 @@ jQuery(function($) {
 
 	$(window).on('beforeunload', function() {
 		mChat.pageIsUnloading = true;
+		if (mChat.page !== 'archive') {
+			mChat.pauseSession();
+		}
 	});
 
 	$('#phpbb').on('click', '[data-mchat-action]', function(e) {
