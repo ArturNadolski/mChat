@@ -39,16 +39,16 @@ if (empty($lang) || !is_array($lang))
 //
 
 $lang = array_merge($lang, [
-	'MCHAT_PREFERENCES'				=> 'Préférences mini-tchat',
+	'MCHAT_PREFERENCES'				=> 'Préférences du mini-tchat',
 	'MCHAT_NO_SETTINGS'				=> 'Vous n’êtes pas autorisé à personnaliser les paramètres.',
 
 	'MCHAT_INDEX'					=> 'Affichage sur la page de l’index du forum',
 	'MCHAT_SOUND'					=> 'Activer le son',
 	'MCHAT_WHOIS_INDEX'				=> 'Afficher <em>« Qui est dans le mini-tchat »</em> sous le mini-tchat',
 	'MCHAT_STATS_INDEX'				=> 'Afficher <em>« Qui est dans le mini-tchat »</em> dans la section statistiques',
-	'MCHAT_STATS_INDEX_EXPLAIN'		=> 'Affiche les utilisateurs dans le mini-tchat sous la section <em>« Qui est en ligne »</em> de la page de l’index du forum.',
-	'MCHAT_AVATARS'					=> 'Affiche les avatars',
-	'MCHAT_CAPITAL_LETTER'			=> 'Met en majuscule la première lettre de vos messages',
+	'MCHAT_STATS_INDEX_EXPLAIN'		=> 'Afficher les utilisateurs dans le mini-tchat sous la section <em>« Qui est en ligne »</em> de la page de l’index du forum.',
+	'MCHAT_AVATARS'					=> 'Afficher les avatars',
+	'MCHAT_CAPITAL_LETTER'			=> 'Mettre en majuscule la première lettre de vos messages',
 	'MCHAT_POSTS'					=> 'Afficher les nouveaux messages (actuellement désactivé, peut être activé dans la section Paramètres globaux du mini-tchat de le PCA)',
 	'MCHAT_DISPLAY_CHARACTER_COUNT'	=> 'Afficher le nombre de caractères lors de la saisie d’un message',
 	'MCHAT_RELATIVE_TIME'			=> 'Afficher le temps relatif pour les nouveaux messages',
@@ -65,7 +65,7 @@ $lang = array_merge($lang, [
 	'MCHAT_POSTS_QUOTE'				=> 'Afficher les messages cités',
 	'MCHAT_POSTS_LOGIN'				=> 'Afficher les connexions utilisateur',
 
-	'MCHAT_DATE_FORMAT'				=> 'Format de date',
+	'MCHAT_DATE_FORMAT'				=> 'Format de la date',
 	'MCHAT_DATE_FORMAT_EXPLAIN'		=> 'La syntaxe utilisée est identique à celle de la fonction PHP <a href="http://www.php.net/date">date()</a>.',
 	'MCHAT_CUSTOM_DATEFORMAT'		=> 'Personnalisée…',
 ]);
