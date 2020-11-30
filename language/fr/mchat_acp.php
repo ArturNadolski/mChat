@@ -68,7 +68,7 @@ $lang = array_merge($lang, [
 	'MCHAT_VERSION'									=> 'Version',
 	'MCHAT_RULES'									=> 'Règles',
 	'MCHAT_RULES_EXPLAIN'							=> 'Permet de saisir les règles ici. Code HTML autorisé.<br/>Ce message peut être traduit en modifiant la valeur MCHAT_RULES_MESSAGE du fichier /ext/dmzx/mchat/language/XX/mchat.php.',
-	'MCHAT_CONFIG_SAVED'							=> 'La configuration du mini-tchat a été mise à jour',
+	'MCHAT_CONFIG_SAVED'							=> 'La configuration du mini-tchat a été mise à jour.',
 	'MCHAT_AVATARS'									=> 'Afficher les avatars',
 	'MCHAT_AVATARS_EXPLAIN'							=> 'Permet d’afficher les avatars des utilisateurs redimensionnés dans le mini-tchat.',
 	'MCHAT_INDEX'									=> 'Afficher le mini-tchat sur la page d’index',
@@ -133,7 +133,11 @@ $lang = array_merge($lang, [
 	'MCHAT_SOUND'									=> 'Activer des sons pour les nouveaux messages, modifiés et supprimés',
 	'MCHAT_PURGE'									=> 'Supprimer tous les messages maintenant',
 	'MCHAT_PURGE_CONFIRM'							=> 'Confirmer la suppression de tous les messages',
-	'MCHAT_PURGED'									=> 'Tous les messages du mini-tchat ont été supprimés avec succès',
+	'MCHAT_PURGED'									=> 'Tous les messages du mini-tchat ont été supprimés avec succès.',
+
+	'MCHAT_REPARSER_STATUS'							=> 'Statut de l’analyseur syntaxique de messages',
+	'MCHAT_REPARSER_ACTIVE'							=> 'actif',
+	'MCHAT_REPARSER_FINISHED'						=> 'terminé',
 
 	// '%1$s' contains 'Retain posts' and 'Delete posts' respectively
 	'MCHAT_RETAIN_MESSAGES'							=> '%1$s et conserver les messages du mini-tchat',
