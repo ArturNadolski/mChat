@@ -77,7 +77,10 @@ $lang = array_merge($lang, [
 	'MCHAT_ENTER'					=> 'Utiliser la combinaison des touches CTRL / CMD + Entrée pour l’action alternative',
 	'MCHAT_ENTER_SUBMIT'			=> 'La touche « Entrée » envoie le message',
 	'MCHAT_ENTER_LINEBREAK'			=> 'La touche « Entrée » ajoute une nouvelle ligne',
-	'MCHAT_COLLAPSE_TITLE'			=> 'Activer la visibilité du mini-tchat',
+	'MCHAT_COLLAPSE_TITLE'			=> [
+		0 => 'Masquer le mini-tchat',
+		1 => 'Afficher le mini-tchat',
+	],
 	'MCHAT_WHO_IS_REFRESH_EXPLAIN'	=> 'Actualisation toutes les <strong>%1$d</strong> secondes',
 	'MCHAT_MINUTES_AGO'				=> [
 		0 => 'à l’instant',
