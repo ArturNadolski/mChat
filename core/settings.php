@@ -15,6 +15,7 @@ use phpbb\auth\auth;
 use phpbb\config\config;
 use phpbb\config\db_text;
 use phpbb\event\dispatcher_interface;
+use phpbb\exception\runtime_exception;
 use phpbb\language\language;
 use phpbb\user;
 
@@ -164,6 +165,7 @@ class settings
 			'mchat_custom_page'				=> ['default' => 1],
 			'mchat_edit_delete_limit'		=> ['default' => 0],
 			'mchat_flood_time'				=> ['default' => 0,		'validation' => ['num', false, 0, 3600]],
+			'mchat_flood_messages'			=> ['default' => 0,		'validation' => ['num', false, 0, 100]],
 			'mchat_index_height'			=> ['default' => 250,	'validation' => ['num', false, 50, 1000]],
 			'mchat_live_updates'			=> ['default' => 1],
 			'mchat_log_enabled'				=> ['default' => 1],
@@ -360,6 +362,11 @@ class settings
 			}
 		}
 
+		if (isset($this->config[$config]))
+		{
+			return $this->config[$config];
+		}
+
 		$global_text_settings = $this->global_text_settings();
 
 		if (isset($global_text_settings[$config]))
@@ -368,7 +375,7 @@ class settings
 			return $global_text_values[$config];
 		}
 
-		return $this->config[$config];
+		throw new runtime_exception();
 	}
 
 	/**

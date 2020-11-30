@@ -212,7 +212,7 @@ class functions
 		{
 			if (!$row['session_viewonline'])
 			{
-				if (!$can_view_hidden && $row['user_id'] !== $this->user->data['user_id'])
+				if (!$can_view_hidden && $row['user_id'] != $this->user->data['user_id'])
 				{
 					continue;
 				}
@@ -324,7 +324,7 @@ class functions
 			$sql_array['WHERE'] = $this->db->sql_in_set('m.user_id', $user_ids);
 			$offset = 0;
 		}
-		else if ($this->mchat_settings->prune_modes[$prune_mode] === 'messages')
+		else if ($this->mchat_settings->prune_modes[$prune_mode] == 'messages')
 		{
 			// Skip fixed number of messages, delete all others
 			$sql_array['ORDER_BY'] = 'm.message_id DESC';
@@ -499,6 +499,7 @@ class functions
 		 * @var int		offset		SQL offset
 		 * @var	array	sql_array	Array containing the SQL query data
 		 * @since 2.0.0-RC6
+		 * @deprecated 2.1.4-RC1, to be removed in 2.1.0.
 		 */
 		$vars = [
 			'message_ids',
@@ -522,6 +523,26 @@ class functions
 				$rows[$i]['user_id'] = ANONYMOUS;
 			}
 		}
+
+		/**
+		 * Event to modify message rows before being processed and displayed
+		 *
+		 * @event dmzx.mchat.get_messages_modify_rowset
+		 * @var array	message_ids	IDs of specific messages to fetch, e.g. for fetching edited messages
+		 * @var int		last_id		The ID of the latest message that the user has, for fetching new messages
+		 * @var int		total		SQL limit
+		 * @var int		offset		SQL offset
+		 * @var	array	rows		Array containing message data
+		 * @since 2.1.4-RC1
+		 */
+		$vars = [
+			'message_ids',
+			'last_id',
+			'total',
+			'offset',
+			'rows',
+		];
+		extract($this->dispatcher->trigger_event('dmzx.mchat.get_messages_modify_rowset', compact($vars)));
 
 		return $rows;
 	}
@@ -631,24 +652,62 @@ class functions
 	 */
 	public function mchat_is_user_flooding()
 	{
-		if (!$this->mchat_settings->cfg('mchat_flood_time') || $this->auth->acl_get('u_mchat_flood_ignore'))
+		if ($this->auth->acl_get('u_mchat_flood_ignore'))
 		{
 			return false;
 		}
 
+		$sql_queries = [];
+
 		$sql_array = [
-			'SELECT'	=> 'm.message_time',
+			'SELECT'	=> 'm.user_id',
 			'FROM'		=> [$this->mchat_settings->get_table_mchat() => 'm'],
-			'WHERE'		=> 'm.user_id = ' . (int) $this->user->data['user_id'],
-			'ORDER_BY'	=> 'm.message_time DESC',
+			'ORDER_BY'	=> 'm.message_time DESC, m.message_id DESC',
 		];
 
-		$sql = $this->db->sql_build_query('SELECT', $sql_array);
-		$result = $this->db->sql_query_limit($sql, 1);
-		$message_time = (int) $this->db->sql_fetchfield('message_time');
-		$this->db->sql_freeresult($result);
+		if ($this->mchat_settings->cfg('mchat_flood_time'))
+		{
+			$sql = $this->db->sql_build_query('SELECT', array_merge($sql_array, [
+				'WHERE'	=> implode(' AND ', [
+					'm.user_id = ' . (int) $this->user->data['user_id'],
+					'message_time > ' . time() . ' - ' . (int) $this->mchat_settings->cfg('mchat_flood_time'),
+					$this->mchat_notifications->get_sql_where('exclude'),
+				]),
+			]));
 
-		return $message_time && time() - $message_time < $this->mchat_settings->cfg('mchat_flood_time');
+			$sql_queries[$sql] = 1;
+		}
+
+		if ($this->mchat_settings->cfg('mchat_flood_messages'))
+		{
+			$sql = $this->db->sql_build_query('SELECT', array_merge($sql_array, [
+				'WHERE'	=> $this->mchat_notifications->get_sql_where('exclude'),
+			]));
+
+			$sql_queries[$sql] = $this->mchat_settings->cfg('mchat_flood_messages');
+		}
+
+		foreach ($sql_queries as $sql => $limit)
+		{
+			$result = $this->db->sql_query_limit($sql, $limit);
+			$rows = $this->db->sql_fetchrowset($result);
+			$this->db->sql_freeresult($result);
+
+			if ($rows)
+			{
+				foreach ($rows as $row)
+				{
+					if ($row['user_id'] != $this->user->data['user_id'])
+					{
+						return false;
+					}
+				}
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
